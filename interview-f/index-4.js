@@ -6,15 +6,24 @@ let lines = [];
 rl.on('line', function(line) {
   lines.push(line.split(' ').map(Number));
 }).on('close',function(){
-  console.time('kse');
-
   let merged = [];
   for (let i = 1; i < lines.length; i++) {
     merged = merged.concat(lines[i].slice(1));
   }
-  let sorted = merged.sort((a, b) => a - b);
-  fs.appendFileSync('output.txt', sorted.join(' '));
+  delete(lines);
+  const gnomeSort = arr => {
+    const l = arr.length;
+    let i = 1;
+    while (i < l) {
+      if (i > 0 && arr[i - 1] > arr[i]) {
+        [arr[i], arr[i - 1]] = [arr[i - 1], arr[i]];
+        i--;
+      } else {
+        i++;
+      }
+    }
+  };
 
-  console.timeLog('kse')
-  console.timeEnd('kse')
+  gnomeSort(merged);
+  fs.appendFileSync('output.txt', merged.join(' '));
 });
